@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House2Life - House Construction Budget Predictor</title>
+
+  <!-- Bootstrap & Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <!-- AOS Animation Library -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <!-- Your custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" />
+
+  <!-- Chart.js (must be BEFORE your script.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="logo" width="40" height="40" class="me-2">
+        <span class="fw-bold text-success">House2Life</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#design">Design</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Home Section -->
+  <section id="home" class="pt-5 mt-5 container" data-aos="fade-up">
+    <div class="text-center mb-4">
+      <h1 class="fw-bold text-primary">House Construction Budget Predictor</h1>
+      <p class="text-muted">Estimate your dream home budget instantly using smart AI prediction.</p>
+    </div>
+
+    <div class="card shadow-lg p-4 rounded-4 glass-card" data-aos="zoom-in">
+      <form id="predictionForm">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Select Number of Floors</label>
+          <select class="form-select" id="floors" required>
+            <option value="" selected disabled>Select</option>
+            <option value="1">1 Floor</option>
+            <option value="2">2 Floors</option>
+          </select>
+        </div>
+
+        <!-- Floor 1 -->
+        <div id="floor1Fields" class="floor-fields">
+          <h5 class="fw-bold text-secondary mt-3">Floor 1 Details</h5>
+          <div class="row g-3">
+            <div class="col-md-4"><input type="number" id="sqft1" class="form-control" placeholder="Square Feet" required /></div>
+            <div class="col-md-4"><input type="number" id="rooms1" class="form-control" placeholder="Rooms" required /></div>
+            <div class="col-md-4"><input type="number" id="baths1" class="form-control" placeholder="Bathrooms" required /></div>
+            <div class="col-md-4">
+              <select id="kitchen1" class="form-select">
+                <option value="1">Kitchen: Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select id="sitout1" class="form-select">
+                <option value="1">Sitout: Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floor 2 -->
+        <div id="floor2Fields" class="floor-fields d-none">
+          <h5 class="fw-bold text-secondary mt-4">Floor 2 Details</h5>
+          <div class="row g-3">
+            <div class="col-md-4"><input type="number" id="sqft2" class="form-control" placeholder="Square Feet" /></div>
+            <div class="col-md-4"><input type="number" id="rooms2" class="form-control" placeholder="Rooms" /></div>
+            <div class="col-md-4"><input type="number" id="baths2" class="form-control" placeholder="Bathrooms" /></div>
+            <div class="col-md-4">
+              <select id="kitchen2" class="form-select">
+                <option value="1">Kitchen: Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select id="sitout2" class="form-select">
+                <option value="1">Sitout: Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-success btn-lg px-5 py-2 shadow-lg">Predict Budget</button>
+        </div>
+      </form>
+
+      <div id="result" class="text-center mt-4 fs-4 fw-bold text-primary"></div>
+
+      <!-- Charts Section -->
+      <div class="mt-5">
+        <h5 class="fw-bold text-secondary">Cost Distribution</h5>
+        <canvas id="floorChart" height="150"></canvas>
+        <canvas id="roomChart" height="150" class="mt-4"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us -->
+  <section id="about" class="py-5 bg-light" data-aos="fade-up">
+    <div class="container text-center">
+      <h2 class="text-success fw-bold mb-3">About Us</h2>
+      <p class="lead text-muted mx-auto" style="max-width:800px;">
+        House2Life is a next-gen AI tool that helps estimate your home construction cost 
+        by combining machine learning, material trends, and real-world data.
+      </p>
+    </div>
+  </section>
+
+
+<!-- Design -->
+<section id="design" class="py-5 container text-center" data-aos="fade-up">
+  <h2 class="text-success fw-bold mb-3">Design Ideas</h2>
+  <p class="text-muted mb-4">Explore stunning 2D home layouts and architectural inspirations.</p>
+  
+  <canvas id="blueprintCanvas" width="800" height="400" class="border shadow-sm rounded-3"></canvas>
+</section>
+
+
+ 
+
+  <!-- Floating Chatbot -->
+  <div id="chatbot-bubble">
+    <i class="bi bi-chat-dots-fill"></i>
+  </div>
+
+  <div id="chatbot-container" class="shadow-lg">
+    <div class="chat-header bg-success text-white d-flex justify-content-between align-items-center px-3 py-2">
+      <span><i class="bi bi-robot"></i> House2Life AI</span>
+      <button id="closeChat" class="btn btn-sm btn-light"><i class="bi bi-x"></i></button>
+    </div>
+    <div class="chat-body p-3" id="chatBody">
+      <div class="bot-msg">👋 Hi there! I’m your AI assistant. Ask me anything about home design or cost.</div>
+    </div>
+    <div class="chat-input d-flex p-2">
+      <input type="text" id="userInput" class="form-control me-2" placeholder="Type your question..." />
+      <button id="sendBtn" class="btn btn-success"><i class="bi bi-send-fill"></i></button>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    &copy; 2025 House2Life | Designed By Abin Mathew
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+  <script src="script.js"></script>
+</body>
+</html>
